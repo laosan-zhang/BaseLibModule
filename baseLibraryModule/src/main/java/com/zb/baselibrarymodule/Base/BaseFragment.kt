@@ -62,7 +62,7 @@ abstract class BaseFragment: Fragment() {
      * 页面跳转
      */
     @JvmOverloads
-    fun toActivity(activity:Class<BaseActivity>,bundle: Bundle? = null){
+    fun toActivity(activity:Class<out BaseActivity>,bundle: Bundle? = null){
         val intent = Intent(requireContext(),activity)
         bundle?.let {
             intent.putExtra("data",it)

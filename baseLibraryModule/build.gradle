@@ -82,4 +82,7 @@ dependencies {
     //gson
     api libs.gson
 
+    //glide 图片加载
+    api libs.glide
+
 }

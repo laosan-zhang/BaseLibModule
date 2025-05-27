@@ -17,6 +17,7 @@ rxJavaVersion = "2.0.1"
 rxJavaAdapterVersion = "3.0.0"
 mmkvVersion = "1.2.11"
 requestInterceptorVersion = "4.9.0"
+glideVersion = "5.0.0-rc01"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -35,6 +36,7 @@ rxjavaAndroid = { group = "io.reactivex.rxjava2", name = "rxandroid", version.re
 rxjavaAdapter = { group = "com.squareup.retrofit2", name = "adapter-rxjava2", version.ref = "rxJavaAdapterVersion" }
 gson = { group = "com.google.code.gson", name = "gson", version.ref = "gsonVersion" }
 mmkv = { group = "com.tencent", name = "mmkv", version.ref = "mmkvVersion" }
+glide = { group = "com.github.bumptech.glide", name = "glide", version.ref = "glideVersion" }
 
 
 junit = { group = "junit", name = "junit", version.ref = "junit" }
