@@ -33,24 +33,6 @@ android {
     }
 }
 
-afterEvaluate {
-    publishing {
-        publications {
-            release(MavenPublication) {
-                from components.release
-                groupId = 'com.zb.baselibrarymodule'
-                artifactId = 'baselibrary'
-                version = '1.0.0'
-            }
-        }
-        repositories {
-            maven {
-                url uri("E:\\maven_repository")
-            }
-        }
-    }
-}
-
 dependencies {
 
     implementation libs.androidx.core.ktx
@@ -85,4 +67,23 @@ dependencies {
     //glide 图片加载
     api libs.glide
 
+}
+
+//发布到本地Maven 仓库配置
+afterEvaluate {
+    publishing {
+        publications {
+            release(MavenPublication) {
+                from components.release
+                groupId = 'com.zb.baselibrarymodule'
+                artifactId = 'baselibrary'
+                version = '1.0.0'
+            }
+        }
+        repositories {
+            maven {
+                url uri("E:\\maven_repository")
+            }
+        }
+    }
 }

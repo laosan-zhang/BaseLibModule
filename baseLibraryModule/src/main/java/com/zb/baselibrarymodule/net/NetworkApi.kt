@@ -34,8 +34,9 @@ object NetworkApi {
     /**
      * 设置网络根地址
      */
-    fun init(@NotNull baseUrl: String) {
+    fun init(@NotNull baseUrl: String):NetworkApi {
         this.rootUrl = baseUrl
+        return this
     }
 
     /**

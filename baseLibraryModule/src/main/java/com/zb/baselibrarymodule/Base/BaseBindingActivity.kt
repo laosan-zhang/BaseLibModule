@@ -12,6 +12,11 @@ import java.lang.reflect.ParameterizedType
 abstract class BaseBindingActivity<T : ViewBinding> : BaseActivity() {
     lateinit var binding: T
     override fun initTop() {
+        initBinding()?.also {
+            binding = it
+            setContentView(binding.root)
+            return
+        }
         val type = this.javaClass.genericSuperclass
         if (type is ParameterizedType) {
             try {
@@ -28,4 +33,9 @@ abstract class BaseBindingActivity<T : ViewBinding> : BaseActivity() {
     override fun initLayout(): Int? {
         return null
     }
+
+    /**
+     * 初始化viewbinding 如果这里初始化了，就不再使用反射的形式初始化，提高性能
+     */
+    abstract fun initBinding():T?
 }

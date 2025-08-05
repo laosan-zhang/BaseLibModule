@@ -13,6 +13,10 @@ import java.lang.reflect.ParameterizedType
 abstract class BaseBindingFragment<T : ViewBinding> : BaseFragment() {
     lateinit var binding: T
     override fun initTop() {
+        initBinding()?.let {
+            binding = it
+            return
+        }
         val type = this.javaClass.genericSuperclass
         if (type is ParameterizedType) {
             try {
@@ -28,4 +32,9 @@ abstract class BaseBindingFragment<T : ViewBinding> : BaseFragment() {
     override fun initLayout(): View {
         return binding.root
     }
+
+    /**
+     * 初始化viewbinding 如果这里初始化了，就不再使用反射的形式初始化，提高性能
+     */
+    abstract fun initBinding():T?
 }

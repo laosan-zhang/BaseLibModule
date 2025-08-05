@@ -135,3 +135,15 @@ fun String?.toMD5(charset: Charset = Charsets.UTF_8): String {
     return EncryptionUtils.md5(this)
 }
 
+/**
+ * 集合排序工具
+ * @param comparator 排序规则，默认按照toString 字符串排序
+ */
+fun <T> List<T>.sort(
+    comparator: Comparator<T> = Comparator { a, b ->
+        a.toString().compareTo(b.toString())
+    }
+): List<T> {
+    return this.sortedWith(comparator)
+}
+

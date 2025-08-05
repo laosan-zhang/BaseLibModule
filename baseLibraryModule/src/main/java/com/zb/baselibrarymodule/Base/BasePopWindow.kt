@@ -16,16 +16,23 @@ import java.lang.reflect.ParameterizedType
 abstract class BasePopWindow<T : ViewBinding, R>(val context: Context, var contentDatas: R) :
     PopupWindow() {
     lateinit var binding: T
+
     init {
-        val type = this.javaClass.genericSuperclass
-        if (type is ParameterizedType) {
-            try {
-                val clazz = type.actualTypeArguments[0] as Class<*>
-                val method = clazz.getDeclaredMethod("inflate", LayoutInflater::class.java)
-                binding = method.invoke(null, LayoutInflater.from(context)) as T
-                setContentView(binding.root)
-            } catch (e: Exception) {
-                throw IllegalStateException("ViewBinding 获取失败！")
+        val currentBinding = initBinding()
+        if (currentBinding != null) {
+            binding = currentBinding
+            setContentView(binding.root)
+        } else {
+            val type = this.javaClass.genericSuperclass
+            if (type is ParameterizedType) {
+                try {
+                    val clazz = type.actualTypeArguments[0] as Class<*>
+                    val method = clazz.getDeclaredMethod("inflate", LayoutInflater::class.java)
+                    binding = method.invoke(null, LayoutInflater.from(context)) as T
+                    setContentView(binding.root)
+                } catch (e: Exception) {
+                    throw IllegalStateException("ViewBinding 获取失败！")
+                }
             }
         }
         contentView = binding.root
@@ -38,6 +45,11 @@ abstract class BasePopWindow<T : ViewBinding, R>(val context: Context, var conte
         initListener()
         initData()
     }
+
+    /**
+     * 初始化viewbinding
+     */
+    abstract fun initBinding(): T?
 
     /**
      * 设置事件监听
@@ -65,7 +77,7 @@ abstract class BasePopWindow<T : ViewBinding, R>(val context: Context, var conte
         if (w > 0) {
             width = w
         }
-        if (h > 0){
+        if (h > 0) {
             height = h
         }
 

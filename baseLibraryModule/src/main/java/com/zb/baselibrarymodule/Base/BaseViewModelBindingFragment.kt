@@ -14,6 +14,10 @@ abstract class BaseViewModelBindingFragment<T : ViewBinding, V : BaseViewModel> 
     lateinit var viewModel: V
     override fun initTop() {
         super.initTop()
+        initViewModel()?.let {
+            viewModel = it
+            return
+        }
         val type = this.javaClass.genericSuperclass
         if (type is ParameterizedType) {
             try {
@@ -26,4 +30,9 @@ abstract class BaseViewModelBindingFragment<T : ViewBinding, V : BaseViewModel> 
             throw IllegalArgumentException("ViewModel 初始化失败")
         }
     }
+
+    /**
+     * 初始化viewmodel 如果这里初始化了，就不再使用反射的形式初始化，提高性能
+     */
+    abstract fun initViewModel(): V?
 }

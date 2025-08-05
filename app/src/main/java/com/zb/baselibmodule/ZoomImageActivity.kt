@@ -1,7 +1,5 @@
 package com.zb.baselibmodule
 
-import android.view.ViewGroup
-import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.zb.baselibmodule.databinding.ActivityZoomImageBinding
 import com.zb.baselibrarymodule.Base.BaseBindingActivity
@@ -14,7 +12,9 @@ import com.zb.baselibrarymodule.Base.BaseBindingActivity
 class ZoomImageActivity : BaseBindingActivity<ActivityZoomImageBinding>() {
     override fun initView() {
 //        Glide.with(this).load("https://picsum.photos/200/200?random=2").into(binding.imageView)
-        Glide.with(this).load("https://fastly.picsum.photos/id/959/1440/2560.jpg?hmac=TjKwqFkRbD8AAKPDMmejXkr4Z8EG845YVO9tIc5kpqQ").into(binding.imageView)
+        Glide.with(this)
+            .load("https://fastly.picsum.photos/id/959/1440/2560.jpg?hmac=TjKwqFkRbD8AAKPDMmejXkr4Z8EG845YVO9tIc5kpqQ")
+            .into(binding.imageView)
     }
 
     override fun initListener() {
@@ -23,5 +23,9 @@ class ZoomImageActivity : BaseBindingActivity<ActivityZoomImageBinding>() {
 
     override fun initData() {
 
+    }
+
+    override fun initBinding(): ActivityZoomImageBinding {
+        return ActivityZoomImageBinding.inflate(layoutInflater)
     }
 }

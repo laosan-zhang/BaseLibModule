@@ -3,6 +3,7 @@ package com.zb.baselibmodule
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.zb.baselibmodule.databinding.ActivityMainBinding
+import com.zb.baselibrarymodule.Base.BaseViewModel
 import com.zb.baselibrarymodule.Base.BaseViewModelBindingActivity
 import com.zb.baselibrarymodule.Utils.StorageUtils
 import com.zb.baselibrarymodule.view.addDivider
@@ -45,5 +46,13 @@ class MainActivity : BaseViewModelBindingActivity<ActivityMainBinding, MainViewM
 
     override fun initData() {
 
+    }
+
+    override fun initBinding(): ActivityMainBinding {
+        return ActivityMainBinding.inflate(layoutInflater)
+    }
+
+    override fun initViewModel(): MainViewModel {
+        return BaseViewModel.getViewModel(this,MainViewModel::class.java)
     }
 }

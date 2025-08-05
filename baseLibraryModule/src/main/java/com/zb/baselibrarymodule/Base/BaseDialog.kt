@@ -27,8 +27,6 @@ abstract class BaseDialog<T : ViewBinding, R>(
     private var hasPadding = true
     private var paddings: Int
 
-    constructor(context: Context, themeResId: Int) : this(context, null, themeResId)
-
     init {
         defaultWidth = dpToPx(dialogContext, 400f)
         defaultHeight = dpToPx(dialogContext, 300f)
@@ -40,21 +38,32 @@ abstract class BaseDialog<T : ViewBinding, R>(
         //设置弹窗不会自动取消 若有需要，可以在子类初始化后重新设置这两个参数
         setCancelable(false)
         setCanceledOnTouchOutside(false)
-        val type = this.javaClass.genericSuperclass
-        if (type is ParameterizedType) {
-            try {
-                val clazz = type.actualTypeArguments[0] as Class<*>
-                val method = clazz.getDeclaredMethod("inflate", LayoutInflater::class.java)
-                binding = method.invoke(null, layoutInflater) as T
-                setContentView(binding.root)
-            } catch (e: Exception) {
-                throw IllegalStateException("ViewBinding 获取失败！")
+        val currentBinding = initBinding()
+        if (currentBinding!=null){
+            binding = currentBinding
+            setContentView(binding.root)
+        }else{
+            val type = this.javaClass.genericSuperclass
+            if (type is ParameterizedType) {
+                try {
+                    val clazz = type.actualTypeArguments[0] as Class<*>
+                    val method = clazz.getDeclaredMethod("inflate", LayoutInflater::class.java)
+                    binding = method.invoke(null, layoutInflater) as T
+                    setContentView(binding.root)
+                } catch (e: Exception) {
+                    throw IllegalStateException("ViewBinding 获取失败！")
+                }
             }
         }
         initView()
         initData()
-        initLinstener()
+        initListener()
     }
+
+    /**
+     * 初始化viewbinding
+     */
+    abstract fun initBinding():T?
 
     /**
      * 获取上下文
@@ -132,5 +141,5 @@ abstract class BaseDialog<T : ViewBinding, R>(
     /**
      * 需要做事件监听的重写这个方法
      */
-    abstract fun initLinstener()
+    abstract fun initListener()
 }
