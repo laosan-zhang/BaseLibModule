@@ -67,6 +67,8 @@ dependencies {
     //glide 图片加载
     api libs.glide
 
+    implementation libs.gsonfactory
+
 }
 
 //发布到本地Maven 仓库配置

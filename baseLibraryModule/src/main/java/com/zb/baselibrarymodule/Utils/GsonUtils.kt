@@ -1,6 +1,7 @@
 package com.zb.baselibrarymodule.Utils
 
 import com.google.gson.Gson
+import com.hjq.gson.factory.GsonFactory
 
 /**
  *  author : 86175
@@ -9,5 +10,5 @@ import com.google.gson.Gson
  *  获取gson 实体
  */
 object GsonUtils {
-    val gson = Gson()
+    val gson = GsonFactory.getSingletonGson()
 }

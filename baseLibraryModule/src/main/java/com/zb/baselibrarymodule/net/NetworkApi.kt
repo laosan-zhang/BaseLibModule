@@ -1,6 +1,8 @@
 package com.zb.baselibrarymodule.net
 
+import com.hjq.gson.factory.GsonFactory
 import com.zb.baselibrarymodule.Base.BaseApplication
+import com.zb.baselibrarymodule.Utils.GsonUtils
 import com.zb.baselibrarymodule.net.config.NetConfig
 import okhttp3.Cache
 import okhttp3.Interceptor
@@ -110,7 +112,7 @@ object NetworkApi {
         val builder = Retrofit.Builder()
         builder.baseUrl(url)
             .client(okHttpClient)
-            .addConverterFactory(GsonConverterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create(GsonUtils.gson))
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
         retrofit = builder.build()
         retrofitHashMap[url + serviceClass.name] = retrofit
