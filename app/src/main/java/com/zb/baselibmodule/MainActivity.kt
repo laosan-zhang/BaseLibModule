@@ -45,6 +45,12 @@ class MainActivity : BaseViewModelBindingActivity<ActivityMainBinding, MainViewM
         binding.toFragmentPage.setOnClickListener {
             toActivity(FragmentHomeActivity::class.java,null)
         }
+        binding.toFragmentCoor.setOnClickListener {
+            toActivity(CoordinatorLayoutTestActivity::class.java,null)
+        }
+        binding.toFragmentCoor2.setOnClickListener {
+            toActivity(CoordinatorLayoutTestActivity2::class.java,null)
+        }
     }
 
     override fun initData() {

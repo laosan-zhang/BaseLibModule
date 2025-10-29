@@ -21,6 +21,14 @@
             android:exported="false"
             android:theme="@style/Theme.BaseLibModule" />
         <activity
+            android:name=".CoordinatorLayoutTestActivity"
+            android:exported="false"
+            android:theme="@style/Theme.BaseLibModule" />
+        <activity
+            android:name=".CoordinatorLayoutTestActivity2"
+            android:exported="false"
+            android:theme="@style/Theme.BaseLibModule" />
+        <activity
             android:name=".MainActivity"
             android:exported="true" >
             <intent-filter>

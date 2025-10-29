@@ -7,10 +7,9 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".MainActivity">
-    <GridLayout
+    <TableLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:columnCount="3"
         >
         <Button
             android:id="@+id/btn_request"
@@ -41,7 +40,21 @@
             android:layout_gravity="center_horizontal"
             android:text="跳转fragment页面"
             />
-    </GridLayout>
+        <Button
+            android:id="@+id/to_fragment_coor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="CoordinatorLayout功能测试"
+            />
+        <Button
+            android:id="@+id/to_fragment_coor2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="CoordinatorLayout功能测试2"
+            />
+    </TableLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_list"

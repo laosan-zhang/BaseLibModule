@@ -1,8 +1,14 @@
 package com.zb.baselibrarymodule.Base
 
 import android.content.Intent
+import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.view.View
+import android.view.WindowInsetsController
+import android.view.WindowManager
+import androidx.annotation.ColorInt
 import androidx.annotation.IdRes
 import androidx.appcompat.app.AppCompatActivity
 import com.tencent.mmkv.MMKV
@@ -19,6 +25,13 @@ abstract class BaseActivity: AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         LogUtil.i(TAG,"onCreate",isShowLifeCycleEvents())
+        // ✅ 1. 初始化沉浸式状态栏
+        if (isEnableImmersiveMode()) {
+            setImmersiveStatusBar(
+                darkText = isDarkStatusBarText(),
+                statusBarColor = getStatusBarColor()
+            )
+        }
         initTop()
         initLayout()?.also {
             setContentView(it)
@@ -69,6 +82,97 @@ abstract class BaseActivity: AppCompatActivity() {
      * @return 是否打印生命周期函数
      */
     open fun isShowLifeCycleEvents() = false
+
+    /**
+     * 动态修改状态栏颜色与文字颜色
+     * @param color 状态栏颜色
+     * @param darkText 状态栏文字是否为黑色
+     */
+    fun setStatusBarStyle(@ColorInt color: Int, darkText: Boolean) {
+        window.statusBarColor = color
+        updateStatusBarTextColor(darkText)
+    }
+
+    /**
+     * 初始化时启用沉浸式效果
+     */
+    protected fun setImmersiveStatusBar(
+        @ColorInt statusBarColor: Int = Color.TRANSPARENT,
+        darkText: Boolean = true
+    ) {
+        val window = window
+
+        // 内容延伸到状态栏区域
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            window.setDecorFitsSystemWindows(false)
+        } else {
+            @Suppress("DEPRECATION")
+            window.decorView.systemUiVisibility =
+                View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+        }
+
+        // 状态栏背景
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+        window.statusBarColor = statusBarColor
+
+        // 文字颜色
+        updateStatusBarTextColor(darkText)
+    }
+
+    /**
+     * 更新状态栏文字颜色（白/黑）
+     */
+    private fun updateStatusBarTextColor(darkText: Boolean) {
+        val window = window
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            window.insetsController?.let { controller ->
+                if (darkText) {
+                    controller.setSystemBarsAppearance(
+                        WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS,
+                        WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS
+                    )
+                } else {
+                    controller.setSystemBarsAppearance(
+                        0,
+                        WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS
+                    )
+                }
+            }
+        } else {
+            @Suppress("DEPRECATION")
+            var flags = window.decorView.systemUiVisibility
+            flags = if (darkText) {
+                flags or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+            } else {
+                flags and View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR.inv()
+            }
+            @Suppress("DEPRECATION")
+            window.decorView.systemUiVisibility = flags
+        }
+    }
+
+    /**
+     * 子类可重写，控制是否启用沉浸式
+     */
+    open fun isEnableImmersiveMode(): Boolean = true
+
+    /**
+     * 子类可重写，控制状态栏字体是否深色
+     */
+    open fun isDarkStatusBarText(): Boolean = true
+
+    /**
+     * 子类可重写，自定义状态栏颜色
+     */
+    open fun getStatusBarColor(): Int = Color.TRANSPARENT
+
+    /**
+     * 获取状态栏高度
+     */
+    fun getStatusBarHeight(): Int {
+        val resourceId = resources.getIdentifier("status_bar_height", "dimen", "android")
+        return if (resourceId > 0) resources.getDimensionPixelSize(resourceId) else 0
+    }
 
     /**
      * 页面跳转
