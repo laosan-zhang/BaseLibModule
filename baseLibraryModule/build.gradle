@@ -83,8 +83,19 @@ afterEvaluate {
             }
         }
         repositories {
+//            maven {
+//                url uri("E:\\maven_repository")
+//            }
+            // 发布到项目内的 maven-repo
             maven {
-                url uri("E:\\maven_repository")
+                name = "LocalRepo"
+                url = uri("${rootProject.rootDir}/maven-repo")
+            }
+            // 如果想直接推送到远程 Gitee 仓库（也可以先 push maven-repo 文件夹）
+            maven {
+                name = "GiteeRepo"
+                url = uri("https://gitee.com/bing910207/BaseLibModule/raw/master/maven-repo")
+                // Gitee 不支持直接写入 raw 文件，你必须 push 本地后才能生效
             }
         }
     }

@@ -7,6 +7,10 @@ pluginManagement {
                 includeGroupByRegex("androidx.*")
             }
         }
+        // 本地 maven 仓库
+        maven { url uri("${rootDir}/maven-repo") }
+        // Gitee 远程 maven 仓库（发布后引用）
+        maven { url 'https://gitee.com/bing910207/BaseLibModule/raw/master/maven-repo' }
         maven { url 'https://jitpack.io'}
         mavenCentral()
         gradlePluginPortal()
@@ -17,9 +21,9 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
-        mavenLocal{
-            url uri('E:\\maven_repository')
-        }
+//        mavenLocal{
+//            url uri('E:\\maven_repository')
+//        }
         maven { url 'https://jitpack.io'}
     }
 }

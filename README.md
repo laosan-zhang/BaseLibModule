@@ -28,7 +28,13 @@
         }
     }
 
-2、发布命令：
-
+2、发布本地命令：
+        
     ./gradlew publishToMavenLocal
     ./gradlew publish 
+
+3、构建发布至gitee maven仓库包命令
+
+    ./gradlew :baseLibraryModule:publishReleasePublicationToLocalRepoRepository
+
+    
