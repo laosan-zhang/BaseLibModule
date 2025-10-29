@@ -31,4 +31,4 @@
 2、发布命令：
 
     ./gradlew publishToMavenLocal
-    ./gradle publish 
+    ./gradlew publish 

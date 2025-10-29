@@ -42,6 +42,9 @@ class MainActivity : BaseViewModelBindingActivity<ActivityMainBinding, MainViewM
                 )*/
             )
         }
+        binding.toFragmentPage.setOnClickListener {
+            toActivity(FragmentHomeActivity::class.java,null)
+        }
     }
 
     override fun initData() {

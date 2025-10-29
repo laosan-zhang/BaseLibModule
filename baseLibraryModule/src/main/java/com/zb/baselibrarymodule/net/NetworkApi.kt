@@ -99,7 +99,6 @@ object NetworkApi {
     /**
      * 获取retrofit 实例
      */
-    @JvmOverloads
     private fun <T> getRetrofit(serviceClass: Class<T>, baseUrl: String? = null): Retrofit {
         if (baseUrl.isNullOrBlank() && rootUrl.isNullOrBlank()) {
             throw IllegalStateException("请求根地址为空，请先使用NetworkApi.init配置跟地址，或者使用getRetorfit(class,baseUrl)方式请求")

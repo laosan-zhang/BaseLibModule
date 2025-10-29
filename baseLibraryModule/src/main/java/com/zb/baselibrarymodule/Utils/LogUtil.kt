@@ -10,21 +10,26 @@ import android.util.Log
  */
 object LogUtil {
     @JvmOverloads
-    fun d(tag: String = "default", log: String) {
-        Log.d(tag, log)
-    }
-    @JvmOverloads
-    fun i(tag: String = "default", log: String) {
-        Log.i(tag, log)
+    fun d(tag: String = "default", log: String, isShow: Boolean = true) {
+        if (isShow)
+            Log.d(tag, log)
     }
 
     @JvmOverloads
-    fun w(tag: String = "default", log: String) {
-        Log.w(tag, log)
+    fun i(tag: String = "default", log: String, isShow: Boolean = true) {
+        if (isShow)
+            Log.i(tag, log)
     }
 
     @JvmOverloads
-    fun e(tag: String = "default", log: String) {
-        Log.e(tag, log)
+    fun w(tag: String = "default", log: String, isShow: Boolean = true) {
+        if (isShow)
+            Log.w(tag, log)
+    }
+
+    @JvmOverloads
+    fun e(tag: String = "default", log: String, isShow: Boolean = true) {
+        if (isShow)
+            Log.e(tag, log)
     }
 }

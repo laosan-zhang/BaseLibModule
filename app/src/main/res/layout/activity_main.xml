@@ -34,6 +34,13 @@
             android:layout_gravity="center_horizontal"
             android:text="预览图片"
             />
+        <Button
+            android:id="@+id/to_fragment_page"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="跳转fragment页面"
+            />
     </GridLayout>
 
     <androidx.recyclerview.widget.RecyclerView
