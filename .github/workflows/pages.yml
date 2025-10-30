@@ -1,0 +1,37 @@
+name: Deploy Maven Repo to GitHub Pages
+
+on:
+  push:
+    branches:
+      - master   # 每次 push master 分支时自动部署
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      - name: Upload Maven Repo
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: './maven-repo'   # 👈 指定你要发布的目录
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
