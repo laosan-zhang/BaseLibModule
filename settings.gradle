@@ -20,7 +20,7 @@ dependencyResolutionManagement {
     repositories {
         maven { url uri("${rootDir}/maven-repo") }
         //github
-//        maven { url "https://github.com/laosan-zhang/BaseLibModule/" }
+//        maven { url "https://laosan-zhang.github.io/BaseLibModule/" }
         //gitee
 //        maven { url "https://gitee.com/bing910207/BaseLibModule/raw/master/maven-repo/" }
         google()

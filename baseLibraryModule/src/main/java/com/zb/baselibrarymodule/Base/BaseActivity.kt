@@ -116,7 +116,9 @@ abstract class BaseActivity: AppCompatActivity() {
         window.statusBarColor = statusBarColor
 
         // 文字颜色
-        updateStatusBarTextColor(darkText)
+        window.decorView.post {
+            updateStatusBarTextColor(darkText)
+        }
     }
 
     /**

@@ -16,8 +16,6 @@ class CoordinatorLayoutTestActivity: BaseBindingActivity<ActivityCoordinatorLayo
     private val adapter by lazy {
         RvAdapter().apply {
             setData(listOf("1","2","3","4","5","6","7","8","9","10"))
-
-
         }
     }
 
