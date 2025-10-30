@@ -8,8 +8,6 @@ pluginManagement {
             }
         }
         // 本地 maven 仓库
-//        maven { url uri("${rootDir}/maven-repo") }
-        // Gitee 远程 maven 仓库（发布后引用）
         maven { url 'https://jitpack.io' }
         mavenCentral()
         gradlePluginPortal()
