@@ -1,6 +1,5 @@
 package com.zb.baselibrarymodule.net
 
-import com.hjq.gson.factory.GsonFactory
 import com.zb.baselibrarymodule.Base.BaseApplication
 import com.zb.baselibrarymodule.Utils.GsonUtils
 import com.zb.baselibrarymodule.net.config.NetConfig
@@ -11,6 +10,7 @@ import org.jetbrains.annotations.NotNull
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
+import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.TimeUnit
 
 /**
@@ -20,7 +20,7 @@ import java.util.concurrent.TimeUnit
  */
 object NetworkApi {
     //retrofit 缓存，防止重复创建
-    private val retrofitHashMap: HashMap<String, Retrofit> = HashMap()
+    private val retrofitHashMap = ConcurrentHashMap<String, Retrofit>()
 
     //httpClient 实例
     private val okHttpClient by lazy {
@@ -36,7 +36,7 @@ object NetworkApi {
     /**
      * 设置网络根地址
      */
-    fun init(@NotNull baseUrl: String):NetworkApi {
+    fun init(@NotNull baseUrl: String): NetworkApi {
         this.rootUrl = baseUrl
         return this
     }
@@ -92,30 +92,48 @@ object NetworkApi {
      * 获取service实例
      */
     @JvmOverloads
-    fun <T> getService(serviceClass: Class<T>, baseUrl: String? = null): T {
-        return getRetrofit(serviceClass, baseUrl).create(serviceClass) as T
+    fun <T> getService(
+        serviceClass: Class<T>,
+        baseUrl: String? = null,
+        okHttpClient: OkHttpClient? = null
+    ): T {
+        return getRetrofit(serviceClass, baseUrl, okHttpClient).create(serviceClass) as T
     }
 
     /**
      * 获取retrofit 实例
      */
-    private fun <T> getRetrofit(serviceClass: Class<T>, baseUrl: String? = null): Retrofit {
+    private fun <T> getRetrofit(
+        serviceClass: Class<T>,
+        baseUrl: String? = null,
+        client: OkHttpClient? = null
+    ): Retrofit {
         if (baseUrl.isNullOrBlank() && rootUrl.isNullOrBlank()) {
             throw IllegalStateException("请求根地址为空，请先使用NetworkApi.init配置跟地址，或者使用getRetorfit(class,baseUrl)方式请求")
         }
         val url = if (baseUrl.isNullOrBlank()) rootUrl!! else baseUrl
-        var retrofit = retrofitHashMap[url + serviceClass.name]
+
+        //当外部传入okHttpClient 时，直接不走缓存，重新创建retrofit对象
+        var retrofit = client?.let {
+            Retrofit.Builder().baseUrl(url).client(client)
+                .addConverterFactory(GsonConverterFactory.create(GsonUtils.gson))
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .build()
+        }
+        if (retrofit != null) return retrofit
+        //没有传入client，走缓存逻辑
+        retrofit = retrofitHashMap[url + serviceClass.name]
         if (retrofit != null) {
             return retrofit
         }
-        val builder = Retrofit.Builder()
-        builder.baseUrl(url)
+        retrofitHashMap[url + serviceClass.name] = Retrofit.Builder()
+            .baseUrl(url)
             .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create(GsonUtils.gson))
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-        retrofit = builder.build()
-        retrofitHashMap[url + serviceClass.name] = retrofit
-        return retrofit
+            .build()
+        return retrofitHashMap[url + serviceClass.name]!!
+
     }
 
     /**

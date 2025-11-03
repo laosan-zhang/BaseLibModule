@@ -54,6 +54,13 @@
             android:layout_gravity="center_horizontal"
             android:text="CoordinatorLayout功能测试2"
             />
+        <Button
+            android:id="@+id/check_permission"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="权限检查"
+            />
     </TableLayout>
 
     <androidx.recyclerview.widget.RecyclerView

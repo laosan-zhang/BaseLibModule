@@ -1,5 +1,7 @@
 package com.zb.baselibmodule
 
+import android.Manifest
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.zb.baselibmodule.databinding.ActivityMainBinding
@@ -51,6 +53,24 @@ class MainActivity : BaseViewModelBindingActivity<ActivityMainBinding, MainViewM
         binding.toFragmentCoor2.setOnClickListener {
             toActivity(CoordinatorLayoutTestActivity2::class.java,null)
         }
+        binding.checkPermission.setOnClickListener {
+            checkPermission()
+        }
+    }
+    fun checkPermission(){
+        println("获取到了像机的权限")
+    }
+
+    fun showNotice(){
+        Toast.makeText(this, "想要像机的权限", Toast.LENGTH_SHORT).show()
+    }
+
+    fun permissionDenied(){
+        Toast.makeText(this, "权限请求失败", Toast.LENGTH_SHORT).show()
+    }
+
+    fun neverAskAgain(){
+        Toast.makeText(this, "不再询问，自己去打开", Toast.LENGTH_SHORT).show()
     }
 
     override fun initData() {
